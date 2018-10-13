@@ -109,7 +109,7 @@
     methods: {
       logout() {
         MessageBox.confirm('确认退出吗?').then(action => {
-          // 发请求退出, 并重置user状态
+
           this.$store.dispatch('logout')
         }, action => {
           console.log('取消')

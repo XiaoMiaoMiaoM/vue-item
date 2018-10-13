@@ -22,7 +22,7 @@
             </a>
           </div>
         </div>
-        <!-- Add Pagination -->
+
         <div class="swiper-pagination"></div>
       </div>
       <img src="./images/msite_back.svg" alt="back" v-else>
@@ -52,9 +52,9 @@
     },
 
     mounted () {
-      // 异步获取商家列表
+
       this.$store.dispatch('getShops')
-      // 异步获取商品分类列表
+
       this.$store.dispatch('getCategorys')
 
 
@@ -63,24 +63,23 @@
     computed: {
       ...mapState(['address', 'categorys']),
 
-      // 产生一个二维数组, 小数组中元素的最大个数为8
       categorysArr () {
         const {categorys} = this
-        const arr = [] // 二维数组
-        let smallArr = [] // 小数组
+        const arr = []
+        let smallArr = []
 
-        // 遍历categorys
+
         categorys.forEach(c => {
 
-          // 当小数组为空数组时, 将小数组保存到大数组
+
           if(smallArr.length===0) {
             arr.push(smallArr)
           }
 
-          // 将当前分类对象保存到小数组
+
           smallArr.push(c)
 
-          // 一旦小数组满了, 准备一个新的小数组
+
           if(smallArr.length===8) {
             smallArr = []
           }
@@ -91,26 +90,15 @@
     },
 
     watch: {
-      // 注意: 状态数据变化后, 更新对应的界面是异步进行的
-      categorys (value) { // categorys状态数据更新了立即
 
-        /*setTimeout(() => {
-          // 初始化列表显示之后执行
-          new Swiper('.swiper-container', {
-            loop: true, // 循环模式
-            // 如果需要分页器
-            pagination: {
-              el: '.swiper-pagination',
-            },
-          })
-        }, 200)*/
+      categorys (value) {
 
-        // 必须在状态数据更新之后执行
-        this.$nextTick(() => { // 回调函数在界面更新之后立即执行
-          // 初始化列表显示之后执行
+
+        this.$nextTick(() => {
+
           new Swiper('.swiper-container', {
-            loop: true, // 循环模式
-            // 如果需要分页器
+            loop: true,
+
             pagination: {
               el: '.swiper-pagination',
             },

@@ -62,14 +62,14 @@
   export default {
     data() {
       return {
-        loginWay: false, // true: 短信, false: 密码
-        phone: '', // 手机号
-        code: '', // 短信验证码
-        name: '', // 用户名
-        pwd: '', // 密码
-        captcha: '', // 图形验证码
-        computeTime: 0, // 倒计时剩余的时间
-        isShowPwd: false, // 是否显示密码
+        loginWay: false,
+        phone: '',
+        code: '',
+        name: '',
+        pwd: '',
+        captcha: '',
+        computeTime: 0,
+        isShowPwd: false,
       }
     },
 
@@ -80,16 +80,13 @@
     },
 
     methods: {
-      // 发送验证码
-      async sendCode () {
-        // alert('----')
 
-        // 启动倒计时
+      async sendCode () {
+
         this.computeTime = 30
-        // 启动循环定时器, 每隔1s减1, 直到0为止
+
         const intervalId = setInterval(() => {
           if(this.computeTime<=0) {
-            // 清除定时器
             clearInterval(intervalId)
             this.computeTime = 0
             return
@@ -97,33 +94,31 @@
           this.computeTime--
         }, 1000)
 
-        // 发请求: 发送短信验证码
+
         const result = await reqSendCode(this.phone)
         if(result.code===0) {
-          // alert('验证码已发送')
+
           Toast('验证码已发送')
         } else {
-          // 停止倒计时
+
           this.computeTime = 0
-          // 显示警告提示
-          // alert('警告提示: '+result.msg)
+
           MessageBox.alert(result.msg).then(action => {
             console.log('点击确定')
           });
         }
       },
 
-      // 更新图形验证码
+
       updateCaptcha () {
-        // 告诉浏览一个新的url, 浏览器就会自动发请求
+
         this.$refs.captcha.src = 'http://localhost:4000/captcha?time='+Date.now()
       },
 
-      // 请求登陆
       async login () {
         let result
-        // 进行前台表单验证
-        if(this.loginWay) { // 短信
+
+        if(this.loginWay) {
           const {phone, code} = this
           if(!this.isRightPhone) {
             return MessageBox.alert('请输入正确手机号')
@@ -141,24 +136,21 @@
           } else if (!/^.{4}$/.test(captcha)) {
             return MessageBox.alert('请输入正确验证码')
           }
-          // 发登陆的请求
+
           result = await reqPwdLogin({name, pwd, captcha})
         }
 
-        // 请求结束后, 停止倒计时
-        this.computeTime = 0
-        // 更新验证码
-        this.updateCaptcha()
 
-        debugger
-        // 根据请求的结果进行相应处理
-        if(result.code===0) { // 成功
+        this.computeTime = 0
+
+        this.updateCaptcha()
+        if(result.code===0) {
           const user = result.data
-          // 将user保存到state
+
           this.$store.dispatch('saveUser', user)
-          // 跳转到个人中心界面
+
           this.$router.replace('/profile')
-        } else { // 失败
+        } else {
           MessageBox.alert(result.msg)
         }
 
