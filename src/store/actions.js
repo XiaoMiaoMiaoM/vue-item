@@ -6,7 +6,10 @@ import {
   reqFoodCategorys,
   reqShops,
   reqUser,
-  reqLogout
+  reqLogout,
+  reqGoods,
+  reqInfo,
+  reqRatings
 } from '../api'
 
 import {
@@ -14,7 +17,10 @@ import {
   RECEIVE_CATEGORYS,
   RECEIVE_ADDRESS,
   RECEIVE_USER,
-  RESET_USER
+  RESET_USER,
+  RECEIVE_GOODS,
+  RECEIVE_INFO,
+  RECEIVE_RATINGS
 } from './mutation-types'
 
 export default {
@@ -75,5 +81,32 @@ export default {
     if (result.code === 0) {
       commit(RESET_USER)
     }
+  },
+
+  async getGoods({commit}) {
+    const result = await reqGoods()
+    if(result.code===0){
+      const goods = result.data
+      commit(RECEIVE_GOODS,{goods})
+      typeof cb ==='function' && cb()
+    }
+  },
+
+  async getRatings ({commit}) {
+    const result = await reqRatings()
+    if(result.code===0){
+      const ratings = result.data
+      commit(RECEIVE_RATINGS,{ratings})
+    }
+  },
+
+  async getInfo ({commit}) {
+    const result = await reqInfo()
+    if(result.code===0){
+      const info = result.data
+      commit(RECEIVE_INFO,{info})
+    }
   }
+
+
 }

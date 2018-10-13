@@ -28,6 +28,9 @@
       const result = await reqInfo()
       console.log('Shop', result)
     },
+    mounted(){
+      this.$store.dispatch('getInfo')
+    },
 
 
     components: {
