@@ -80,11 +80,8 @@
     },
 
     methods: {
-
       async sendCode () {
-
         this.computeTime = 30
-
         const intervalId = setInterval(() => {
           if(this.computeTime<=0) {
             clearInterval(intervalId)
@@ -94,38 +91,30 @@
           this.computeTime--
         }, 1000)
 
-
         const result = await reqSendCode(this.phone)
         if(result.code===0) {
-
           Toast('验证码已发送')
         } else {
-
           this.computeTime = 0
-
           MessageBox.alert(result.msg).then(action => {
             console.log('点击确定')
           });
         }
       },
 
-
       updateCaptcha () {
-
         this.$refs.captcha.src = 'http://localhost:4000/captcha?time='+Date.now()
       },
 
       async login () {
         let result
-
-        if(this.loginWay) {
+        if(this.loginWay) { // 短信
           const {phone, code} = this
           if(!this.isRightPhone) {
             return MessageBox.alert('请输入正确手机号')
           } else if (!/^\d{6}$/.test(code)) {
             return MessageBox.alert('请输入正确验证码')
           }
-          // 发登陆的请求
           result = await reqSmsLogin(phone, code)
         } else { // 密码
           const {name, pwd, captcha} = this
@@ -136,21 +125,16 @@
           } else if (!/^.{4}$/.test(captcha)) {
             return MessageBox.alert('请输入正确验证码')
           }
-
           result = await reqPwdLogin({name, pwd, captcha})
         }
 
-
         this.computeTime = 0
-
         this.updateCaptcha()
-        if(result.code===0) {
+        if(result.code===0) { // 成功
           const user = result.data
-
           this.$store.dispatch('saveUser', user)
-
           this.$router.replace('/profile')
-        } else {
+        } else { // 失败
           MessageBox.alert(result.msg)
         }
 

@@ -1,4 +1,4 @@
- /*
+/*
 使用mockjs提供mock数据接口
  */
 import Mock from 'mockjs'

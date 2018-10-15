@@ -11,31 +11,22 @@
 
   export default {
     props: {
-      score: Number, // 评分
-      size: Number, // 尺寸
+      score: Number,
+      size: Number,
     },
 
     computed: {
-      /*
-      3.5: 3 + 1 + 1
-       */
       starClasses () {
         const scs = []
 
         const {score} = this
         const scoreInteger = Math.floor(score)
-
-        // 向scs中添加n个CLASS_ON
         for (let i = 0; i < scoreInteger; i++) {
           scs.push(CLASS_ON)
         }
-
-        // 向scs中添加1/0个CLASS_HALF
         if(score*10-scoreInteger*10>=5) {
           scs.push(CLASS_HALF)
         }
-
-        // 向scs中添加n个CLASS_OFF
         while(scs.length<5) {
           scs.push(CLASS_OFF)
         }

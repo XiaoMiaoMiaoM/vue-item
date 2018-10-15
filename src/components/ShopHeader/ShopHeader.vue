@@ -1,133 +1,127 @@
 <template>
-    <div class="shop-header">
-      <nav class="shop-nav"
-           style="background-image: url('https://fuss10.elemecdn.com/f/5c/ead54394c3de198d3e6d3e9111bbfpng.png');">
-        <a class="back">
-          <i class="iconfont icon-arrow_left"/>
-        </a>
-      </nav>
-      <div class="shop-content">
-        <img src="https://fuss10.elemecdn.com/8/40/02872ce8aefe75c16d3190e75ad61jpeg.jpeg" class="content-image">
-        <div class="header-content">
-          <h2 class="content-title">
+  <div class="shop-header">
+    <nav class="shop-nav"
+         :style="{backgroundImage: `url(${info.bgImg})`}">
+      <a class="back" @click="$router.back()">
+        <i class="iconfont icon-arrow_left"/>
+      </a>
+    </nav>
+    <div class="shop-content" @click="isShowBulletin=true">
+      <img :src="info.avatar" class="content-image">
+      <div class="header-content">
+        <h2 class="content-title">
           <span class="content-tag">
             <span class="mini-tag">品牌</span>
           </span>
-            <span class="content-name">嘉禾一品（温都水城）</span>
-            <i class="content-icon"></i>
-          </h2>
-          <div class="shop-message">
-            <span class="shop-message-detail">5</span>
-            <span class="shop-message-detail">月售90单</span>
-            <span class="shop-message-detail">
-            硅谷专送
-            <span>约28分钟</span>
+          <span class="content-name">{{info.name}}</span>
+          <i class="content-icon"></i>
+        </h2>
+        <div class="shop-message">
+          <span class="shop-message-detail">{{info.deliveryPrice}}</span>
+          <span class="shop-message-detail">月售{{info.sellCount}}单</span>
+          <span class="shop-message-detail">
+            {{info.description}}
+            <span>约{{info.deliveryTime}}分钟</span>
           </span>
-            <span class="shop-message-detail">距离1000m</span>
-          </div>
-          <p class="shop-notice">是以粥为特色的中式营养快餐，自2004年10月18日创立“嘉和一品”品牌至今</p>
+          <span class="shop-message-detail">距离{{info.distance}}</span>
         </div>
       </div>
-      <div class="shop-header-discounts">
-        <div class="discounts-left">
-          <div class="activity activity-green">
+    </div>
+    <div class="shop-header-discounts" v-if="info.supports" @click="isShowSupport=true">
+      <div class="discounts-left">
+        <div class="activity" :class="activityClasses[info.supports[0].type]">
           <span class="content-tag">
-            <span class="mini-tag">首单</span>
+            <span class="mini-tag">{{info.supports[0].name}}</span>
           </span>
-            <span class="activity-content">新用户下单立减17元</span>
-          </div>
-        </div>
-        <div class="discounts-right">
-          3个优惠
+          <span class="activity-content ellipsis">{{info.supports[0].content}}</span>
         </div>
       </div>
-      <div class="shop-brief-modal" style="display: none;">
-        <div class="brief-modal-content">
-          <h2 class="content-title">
+      <div class="discounts-right">
+        {{info.supports.length}}个优惠
+      </div>
+    </div>
+    <div class="shop-brief-modal" v-show="isShowBulletin">
+      <div class="brief-modal-content">
+        <h2 class="content-title">
           <span class="content-tag">
             <span class="mini-tag">品牌</span>
           </span>
-            <span class="content-name">嘉禾一品（温都水城）</span>
-          </h2>
-          <ul class="brief-modal-msg">
-            <li>
-              <h3>3.5</h3>
-              <p>评分</p>
-            </li>
-            <li>
-              <h3>90单</h3>
-              <p>月售</p>
-            </li>
-            <li>
-              <h3>硅谷专送</h3>
-              <p>约28分钟</p>
-            </li>
-            <li>
-              <h3>4元</h3>
-              <p>配送费用</p>
-            </li>
-            <li>
-              <h3>1000m</h3>
-              <p>距离</p>
-            </li>
-          </ul>
-          <h3 class="brief-modal-title">
-            <span>公告</span></h3>
-          <div class="brief-modal-notice">
-            是以粥为特色的中式营养快餐，自2004年10月18日创立“嘉和一品”品牌至今
-          </div>
-          <div class="mask-footer">
-            <span class="iconfont icon-close"></span>
-          </div>
+          <span class="content-name">{{info.name}}</span>
+        </h2>
+        <ul class="brief-modal-msg">
+          <li>
+            <h3>{{info.score}}</h3>
+            <p>评分</p>
+          </li>
+          <li>
+            <h3>{{info.sellCount}}单</h3>
+            <p>月售</p>
+          </li>
+          <li>
+            <h3>{{info.description}}</h3>
+            <p>约{{info.deliveryTime}}分钟</p>
+          </li>
+          <li>
+            <h3>{{info.deliveryPrice}}元</h3>
+            <p>配送费用</p>
+          </li>
+          <li>
+            <h3>{{info.distance}}</h3>
+            <p>距离</p>
+          </li>
+        </ul>
+        <h3 class="brief-modal-title">
+          <span>公告</span></h3>
+        <div class="brief-modal-notice">
+          {{info.bulletin}}
         </div>
-        <div class="brief-modal-cover"></div>
+        <div class="mask-footer" @click="isShowBulletin = false">
+          <span class="iconfont icon-close"></span>
+        </div>
       </div>
-      <div class="activity-sheet" style="display: none;">
+      <div class="brief-modal-cover"></div>
+    </div>
+    <transition name="fade">
+      <div class="activity-sheet" v-show="isShowSupport">
         <div class="activity-sheet-content">
           <h2 class="activity-sheet-title">
             优惠活动</h2>
           <ul class="list">
-            <li class="activity-item activity-green">
+            <li class="activity-item" v-for="(support, index) in info.supports" :key="index" :class="activityClasses[support.type]">
             <span class="content-tag">
-              <span class="mini-tag">首单</span>
+              <span class="mini-tag">{{support.name}}</span>
             </span>
-              <span class="activity-content">新用户下单立减17元(不与其它活动同享)</span>
-            </li>
-            <li class="activity-item activity-red">
-            <span class="content-tag">
-              <span class="mini-tag">满减</span>
-            </span>
-              <span class="activity-content">满35减19，满65减35</span>
-            </li>
-            <li class="activity-item activity-orange">
-            <span class="content-tag">
-              <span class="mini-tag">特价</span>
-            </span>
-              <span class="activity-content">【立减19.5元】欢乐小食餐</span>
+              <span class="activity-content">{{support.content}}</span>
             </li>
           </ul>
-          <div class="activity-sheet-close">
+          <div class="activity-sheet-close" @click="isShowSupport = false">
             <span class="iconfont icon-close"></span>
           </div>
         </div>
         <div class="activity-sheet-cover"></div>
       </div>
-    </div>
-  </template>
+    </transition>
+  </div>
+</template>
+
 <script>
   import {mapState} from 'vuex'
   export default {
     data() {
-      return {}
+      return {
+        activityClasses: ['activity-green', 'activity-red', 'activity-orange'],
+        isShowBulletin: false,
+        isShowSupport: false
+      }
     },
+
     computed: {
       ...mapState(['info'])
     }
   }
 </script>
-<style lang="stylus" type="text/stylus" rel="stylesheet/stylus">
+<style lang="stylus" rel="stylesheet/stylus" scoped>
   @import "../../common/stylus/mixins.styl"
-
   .shop-header
     height 100%
     position relative
@@ -137,7 +131,7 @@
     .shop-nav
       background-size cover
       background-repeat no-repeat
-      height 70px
+      height 40px
       padding 5px 10px
       position relative
       &::before
@@ -159,7 +153,7 @@
           color: #fff
 
     .shop-content
-      padding 35px 20px 0
+      padding 30px 20px 5px 20px
       position relative
       display flex
       background #fff
@@ -254,7 +248,7 @@
       padding 5px 7px
       font-size 11px
       color #666
-      margin 0 30px 20px 30px
+      margin 0 30px
       align-items center
       .discounts-left
         flex 1
@@ -321,7 +315,7 @@
         height 100%
         top 0
         left 0
-        background-color rgba(0,0,0,.5)
+        background-color rgba(0, 0, 0, .5)
         z-index 1
 
       .brief-modal-content
@@ -342,7 +336,7 @@
           display flex
           align-items center
           justify-content center
-          >span
+          > span
             font-weight 600
           .content-tag
             border-radius 2px
@@ -368,15 +362,15 @@
         .brief-modal-msg
           display flex
           margin 20px -10px 0
-          >li
+          > li
             flex 1
             text-align center
-            >h3
+            > h3
               font-size 15px
               font-weight 600
               color #333
               margin-bottom 8px
-            >p
+            > p
               font-size 12px
               color #999
         .brief-modal-title
@@ -384,11 +378,11 @@
           text-align center
           margin 15px auto 15px
           width 85px
-          background-image linear-gradient(90deg,#fff,#333 50%,#fff)
+          background-image linear-gradient(90deg, #fff, #333 50%, #fff)
           background-size 100% 1px
           background-position 50%
           background-repeat no-repeat
-          >span
+          > span
             font-size 12px
             padding 0 6px
             color #999
@@ -404,12 +398,12 @@
           bottom -60px
           left 50%
           padding 6px
-          border 1px solid rgba(255,255,255,.7)
+          border 1px solid rgba(255, 255, 255, .7)
           border-radius 50%
           transform translateX(-50%)
           span
             font-size 16px
-            color rgba(255,255,255,.7)
+            color rgba(255, 255, 255, .7)
     .activity-sheet
       position fixed
       top 0
@@ -417,9 +411,9 @@
       width 100%
       height 100%
       z-index 99
-      &.move-enter-active, &.move-leave-active
-        transition opacity .3s
-      &.move-enter-active, &.move-leave-active
+      &.fade-enter-active, &.fade-leave-active
+        transition opacity 0.5s
+      &.fade-enter-active, &.fade-leave-active
         opacity 0
       .activity-sheet-content
         position absolute
@@ -494,4 +488,5 @@
         top 0
         left 0
         background-color rgba(0, 0, 0, .5)
+
 </style>

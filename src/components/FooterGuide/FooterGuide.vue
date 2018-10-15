@@ -30,7 +30,6 @@
   export default {
     methods: {
       goTo (path) {
-        // 通过路由导航跳转路由
         this.$router.replace(path)
       }
     }

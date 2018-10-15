@@ -20,6 +20,7 @@
 <script>
   import ShopHeader from '../../components/ShopHeader/ShopHeader.vue'
 
+
   import {reqInfo} from '../../api'
 
   export default {
@@ -27,9 +28,13 @@
     async mounted () {
       const result = await reqInfo()
       console.log('Shop', result)
+
+
     },
-    mounted(){
+
+    mounted() {
       this.$store.dispatch('getInfo')
+
     },
 
 
@@ -37,6 +42,7 @@
       ShopHeader
     }
   }
+
 </script>
 <style lang="stylus" type="text/stylus" rel="stylesheet/stylus">
   @import "../../common/stylus/mixins.styl"

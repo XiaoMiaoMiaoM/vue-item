@@ -7,9 +7,9 @@ import {
   reqShops,
   reqUser,
   reqLogout,
-  reqGoods,
   reqInfo,
-  reqRatings
+  reqRatings,
+  reqGoods
 } from '../api'
 
 import {
@@ -19,53 +19,42 @@ import {
   RECEIVE_USER,
   RESET_USER,
   RECEIVE_GOODS,
-  RECEIVE_INFO,
-  RECEIVE_RATINGS
+  RECEIVE_RATINGS,
+  RECEIVE_INFO
 } from './mutation-types'
 
 export default {
-
-
   async getAddress({commit, state}) {
 
     const {latitude, longitude} = state
     const result = await reqAddress(latitude + ',' + longitude)   // {code: 0, data: address}
     if (result.code === 0) {
       const address = result.data
-
       commit(RECEIVE_ADDRESS, {address})
     }
   },
 
-
   async getCategorys({commit}) {
-
     const result = await reqFoodCategorys()
     if (result.code === 0) {
       const categorys = result.data
-
       commit(RECEIVE_CATEGORYS, {categorys})
     }
   },
 
 
-
   async getShops({commit, state}) {
-
     const {latitude, longitude} = state
     const result = await reqShops(longitude, latitude)
     if (result.code === 0) {
       const shops = result.data
-
       commit(RECEIVE_SHOPS, {shops})
     }
   },
 
-
   saveUser({commit}, user) {
     commit(RECEIVE_USER, {user})
   },
-
 
   async getUser({commit}) {
     const result = await reqUser()
@@ -75,7 +64,6 @@ export default {
     }
   },
 
-
   async logout({commit}) {
     const result = await reqLogout()
     if (result.code === 0) {
@@ -83,30 +71,30 @@ export default {
     }
   },
 
-  async getGoods({commit}) {
+  async getGoods ({commit}, cb) {
     const result = await reqGoods()
-    if(result.code===0){
+    if(result.code===0) {
       const goods = result.data
-      commit(RECEIVE_GOODS,{goods})
+      commit(RECEIVE_GOODS, {goods})
       typeof cb ==='function' && cb()
     }
   },
 
   async getRatings ({commit}) {
     const result = await reqRatings()
-    if(result.code===0){
+    if(result.code===0) {
       const ratings = result.data
-      commit(RECEIVE_RATINGS,{ratings})
+      commit(RECEIVE_RATINGS, {ratings})
     }
   },
 
   async getInfo ({commit}) {
     const result = await reqInfo()
-    if(result.code===0){
+    if(result.code===0) {
       const info = result.data
-      commit(RECEIVE_INFO,{info})
+      commit(RECEIVE_INFO, {info})
     }
-  }
-
+  },
 
 }
+
