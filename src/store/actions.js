@@ -9,7 +9,7 @@ import {
   reqLogout,
   reqInfo,
   reqRatings,
-  reqGoods
+  reqGoods,
 } from '../api'
 
 import {
@@ -20,7 +20,10 @@ import {
   RESET_USER,
   RECEIVE_GOODS,
   RECEIVE_RATINGS,
-  RECEIVE_INFO
+  RECEIVE_INFO,
+  DECREMENT_FOOD_COUNT,
+  INCREMENT_FOOD_COUNT,
+  CLEAR_CART
 } from './mutation-types'
 
 export default {
@@ -95,6 +98,17 @@ export default {
       commit(RECEIVE_INFO, {info})
     }
   },
+
+  updateFoodCount({commit},{isAdd,food}){
+    if(isAdd){
+      commit(INCREMENT_FOOD_COUNT,{food})
+    }else {
+      commit(DECREMENT_FOOD_COUNT,{food})
+    }
+  },
+  clearCart({commit}){
+    commit(CLEAR_CART)
+  }
 
 }
 
