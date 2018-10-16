@@ -36,7 +36,9 @@
         </div>
       </div>
     </div>
-    <div class="list-mask" style="display: none;"></div>
+    <transition name="fade">
+      <div class="list-mask" v-show="listShow" @click="toggleShow"></div>
+    </transition>
   </div>
 </template>
 <script>

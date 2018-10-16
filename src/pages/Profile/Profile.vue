@@ -91,6 +91,9 @@
         </div>
       </a>
     </section>
+    <router-link to="/a">AAA</router-link>
+    <router-link to="/b">BBB</router-link>
+    <router-link to="/Login">去登陆</router-link>
 
     <section class="profile_my_order border-1px" v-if="user._id">
       <mt-button type="danger" style="width: 100%" @click="logout">退出登陆</mt-button>

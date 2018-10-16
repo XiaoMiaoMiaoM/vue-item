@@ -83,19 +83,21 @@ export default {
     }
   },
 
-  async getRatings ({commit}) {
+  async getRatings ({commit},cb) {
     const result = await reqRatings()
     if(result.code===0) {
       const ratings = result.data
       commit(RECEIVE_RATINGS, {ratings})
+      typeof cb ==='function' && cb()
     }
   },
 
-  async getInfo ({commit}) {
+  async getInfo ({commit},cb) {
     const result = await reqInfo()
     if(result.code===0) {
       const info = result.data
       commit(RECEIVE_INFO, {info})
+      typeof cb ==='function' && cb()
     }
   },
 
